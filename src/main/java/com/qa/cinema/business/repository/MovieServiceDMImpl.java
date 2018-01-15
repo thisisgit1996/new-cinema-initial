@@ -19,8 +19,8 @@ public class MovieServiceDMImpl {
 	private EntityManager em;
 	
 	public List<Movie> getAllMovies() {
-		TypedQuery<Movie> query = em.createQuery("Select * from Movie "
-				+ "order by Movie.title Desc", Movie.class);
+		TypedQuery<Movie> query = em.createQuery("Select m from Movie m "
+				+ "order by m.title Desc", Movie.class);
 		return query.getResultList();
 	}
 	
@@ -35,13 +35,17 @@ public class MovieServiceDMImpl {
 		
 	}
 	@Transactional(Transactional.TxType.REQUIRED)
-	public void updateMovie(Movie movie) {
-		em.merge(movie);
+	public void updateMovie(Long id, String update) {
+		Movie newMovie = JU.getObjectForJSON(update, Movie.class);
+		Movie currentMovie = em.find(Movie.class, id);
+		if(newMovie != null) {
+			currentMovie = newMovie;
+		}
+		em.merge(currentMovie);
 	}
 	@Transactional(Transactional.TxType.REQUIRED)
-	public void deleteMovieFromString(String JSONDeleteMovie) {
-		Movie movie = JU.getObjectForJSON(JSONDeleteMovie, Movie.class);
-		em.remove(movie);
+	public void deleteMovie(Long id) {
+		em.remove(em.find(Movie.class, id));
 	}
 
 }

@@ -9,6 +9,17 @@ import javax.persistence.Id;
 @Entity
 public class Movie {
 	
+	public Movie(Long id, String title, String genre, String ageRating) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.genre = genre;
+		this.ageRating = ageRating;
+	}
+	
+	public Movie() {
+		
+	}
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	@Column (length = 100)
@@ -36,4 +47,6 @@ public class Movie {
 	public void setAgeRating(String ageRating) {
 		this.ageRating = ageRating;
 	}
+	
+	
 }
